@@ -2,7 +2,8 @@
 # easier this way.
 #exit 
 # Clear dist dir
-rm ./dist/*
+mkdir -p dist
+rm -f ./dist/*
 
 # Copy over support files.
 cp src/*.js ./dist/
