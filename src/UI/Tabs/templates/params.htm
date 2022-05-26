@@ -1,0 +1,232 @@
+<div>
+  <b-form v-if="webAssemblyAvaialble">
+    <b-card class="mb-2 text-center" style="margin-bottom: 1.4rem !important">
+      <b-card-text>
+        Use this tab to setup a FPocketWeb job in your browser. Specify the
+        input files and <i>fpocket</i> parameters below.
+      </b-card-text>
+    </b-card>
+
+
+    <sub-section title="Input File" v-if="showFileInputs">
+    <mol-loader
+        :multipleFiles="false"
+        :saveMultipleFilesToDatabase="false"
+        :fileLoaderPlugins="['pdb-id-input', 'file-loader-input', 'url-input', 'alphafold-input']"
+        label=""
+        description="Load a PDB file for pocket detection."
+        extraDescription=""
+        accept=".pdb"
+        :required="true"
+        :allowAtomDelete="true"
+        :allowAtomExtract="false"
+        @onError="onMolLoadError"
+        @onFileReady="onFileReady"
+    ></mol-loader>
+
+    <!-- @onStartConvertFile="onStartConvertFile" -->
+    <!-- @onExtractAtoms="onExtractAtoms" -->
+    <!-- convert=".pdbqt, .ent, .xyz, .pqr, .mcif, .mmcif" -->
+
+    <form-button
+        @click.native="useExampleFpocketInputFiles"
+        cls="float-right"
+        >Use Example File</form-button
+    >
+    <!-- variant="default" -->
+    </sub-section>
+
+    <sub-section title="PDB Preview">
+      <form-group label="" id="input-group-pdb-3dmol" description="">
+        <div class="bv-example-row container-fluid">
+          <b-row>
+            <b-col style="padding-left: 0; padding-right: 0">
+              <threedmol type="pdb"></threedmol>
+            </b-col>
+          </b-row>
+        </div>
+      </form-group>
+    </sub-section>
+
+    <sub-section title="Advanced Parameters">
+      <div role="tablist">
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-2 variant="default"
+              >Optional output parameters
+            </b-button>
+          </b-card-header>
+          <b-collapse id="accordion-2" role="tabpanel">
+            <b-card-body>
+              <b-card
+                class="mb-2 text-center"
+                style="margin-bottom: 1.4rem !important"
+              >
+                <b-card-text>
+                  Optional parameters to control FPocketWeb output
+                </b-card-text>
+              </b-card>
+
+              <check-box
+                label="Calculate VdW and Coulomb grids for each pocket"
+                id="calculate_interaction_grids"
+              ></check-box>
+              <check-box
+                label="Write fpocket descriptors to the standard output"
+                id="pocket_descr_stdout"
+              ></check-box>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-3 variant="default"
+              >Optional input parameters
+            </b-button>
+          </b-card-header>
+          <b-collapse id="accordion-3" role="tabpanel">
+            <b-card-body>
+              <b-card
+                class="mb-2 text-center"
+                style="margin-bottom: 1.4rem !important"
+              >
+                <b-card-text>
+                  Advanced parameters that are best left unmodified
+                </b-card-text>
+              </b-card>
+              <numeric-input
+                label="model_number"
+                id="model_number"
+                description="Number of model to analyze."
+              ></numeric-input>
+              <!--file-input
+                                label="topology_file"
+                                id="topology_file"
+                                description="Formats: PDB."
+                                accept=".pdb"
+                            >
+
+                            </file-input-->
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-4 variant="default"
+              >Optional pocket detection parameters
+            </b-button>
+          </b-card-header>
+          <b-collapse id="accordion-4" role="tabpanel">
+            <b-card-body>
+              <numeric-input
+                label="min_alpha_size"
+                id="min_alpha_size"
+                description="Minimum radius of an alpha-sphere."
+                placeholder="6.2"
+                :min="0"
+              >
+              </numeric-input>
+              <numeric-input
+                label="max_alpha_size"
+                id="max_alpha_size"
+                description="Maximum radius of an alpha-sphere."
+                placeholder="3.4"
+              ></numeric-input>
+              <numeric-input
+                label="clustering_distance"
+                id="clustering_distance"
+                description="Distance threshold for clustering algorithm."
+                placeholder="2.4"
+              >
+              </numeric-input>
+              <dropdown-input
+                label="clustering_method"
+                id="clustering_method"
+                description="Clustering method for grouping voronoi vertices."
+                placeholder="test"
+                selected="s"
+                :options="[
+                                    { text: 's : single linkage clustering', value: 's' },
+                                    { text: 'm : complete linkage clustering', value: 'm' },
+                                    { text: 'a : average linkage clustering', value: 'a' }
+                                  ]"
+                :default="1"
+              ></dropdown-input>
+              <dropdown-input
+                label="clustering_measure"
+                id="clustering_measure"
+                description="Distance measure for clustering."
+                placeholder="1"
+                :options="[
+                                    { text: 'e : euclidean distance', value: 'e' },
+                                    { text: 'b : Manhattan distance', value: 'b' }
+                                ]"
+                :default="0"
+                selected="e"
+              ></dropdown-input>
+              <numeric-input
+                label="min_spheres_per_pocket"
+                id="min_spheres_per_pocket"
+                description="Minimum number of a-sphere per pocket."
+                placeholder="15"
+                :default="15"
+              >
+              </numeric-input>
+              <numeric-input
+                label="ratio_apol_spheres_pocket"
+                id="ratio_apol_spheres_pocket"
+                description="Minimum proportion of apolar sphere in a pocket (remove otherwise)"
+                placeholder="0.0"
+                :default="0.0"
+              ></numeric-input>
+              <numeric-input
+                label="number_apol_asph_pocket"
+                id="number_apol_asph_pocket"
+                description="Minimum number of apolar neighbor for an a-sphere to be considered as apolar."
+                placeholder="3"
+                :default="3"
+              ></numeric-input>
+              <numeric-input
+                label="iterations_volume_mc"
+                id="iterations_volume_mc"
+                description="Number of Monte-Carlo iterations for calculating each pocket volume."
+                placeholder="300"
+                :default="300"
+              ></numeric-input>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+      </div>
+    </sub-section>
+
+    <fpocket-commandline></fpocket-commandline>
+
+    <!--span style="display:none;">{{validate(false)}}</span-->
+    <!-- Hackish. Just to make reactive. -->
+    <form-button
+      @click.native="onSubmitClick"
+      variant="primary"
+      cls="float-right mb-4"
+      :disabled="$store.state.pdbContents === ''"
+      >Start FPocketWeb
+    </form-button>
+  </b-form>
+  <div v-else>
+    <p>
+      Unfortunately, your browser does not support WebAssembly. Please
+      <a
+        href="https://developer.mozilla.org/en-US/docs/WebAssembly#Browser_compatibility"
+        target="_blank"
+        >switch to a browser that does</a
+      >
+      (e.g., Google Chrome).
+    </p>
+
+    <p>
+      Note that you can still use the "Existing Fpocket Output" option (see menu
+      on the left) even without WebAssembly.
+    </p>
+  </div>
+</div>

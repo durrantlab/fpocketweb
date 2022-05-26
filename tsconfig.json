@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "module": "esnext",
+        "target": "es2015",
+        "jsx": "react",
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "./src/global.d.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "types": [
+        "babylonjs",
+        "babylonjs-gui"
+    ]
+}

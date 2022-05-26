@@ -1,0 +1,58 @@
+<div class="overflow-auto" id="infoTable">
+    <b-table id="info-output" ref="infoOutput" :per-page="perPage" :current-page="currentPage" :items="items" :fields="fields" @row-selected="onRowSelected" primary-key="Score" :tbody-transition-props="transProps" selectable responsive="sm">
+        <template #cell(show_details)="row">
+            <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
+            <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">
+                Details
+            </b-form-checkbox>
+        </template>
+
+        <template #cell(details)="row">
+            <b-form-checkbox switch v-model="row.detailsShowing" @change="row.toggleDetails"></b-form-checkbox>
+        </template>
+        <template #cell(color)="row">
+            <v-input-colorpicker v-model="colors[row.index + 1]" @input="setColorsStoreVar" />
+        </template>
+
+        <template #cell(opacity)="row">
+            <b-button size="sm" :id="'row-opacity'+row.index.toString()" variant="light" ref="button">
+                Set
+            </b-button>
+            <!--p :id="'row-opacity'+row.index.toString()">{{ opacities[row.index] }}</p-->
+            <!--b-form-input v-model="opacities[row.index]" :id="'row-opacity'+row.index.toString()" size="sm"></b-form-input-->
+            <b-popover :ref="'popover'+row.index.toString()" :target="'row-opacity'+row.index.toString()" triggers="hover">
+                <vue-slider
+                    v-model="opacities[row.index]"
+                    :min="0"
+                    :max="1"
+                    :interval="0.01"
+                    :marks="[0, 1]"
+                    width="100px"
+                    ref="slider"
+                    @change="setOp(row.index)"
+                    @blur=""
+                ></vue-slider>
+            </b-popover>
+        </template>
+
+        <template #row-details="row">
+            <b-card>
+                <template v-for="(value, key, index) in row.item" :key="row.item.pocket">
+                <b-row class="mb-2"  v-if="index > 3 && index < 20">
+                    <b-col sm="3" class="text-sm-right"><b>{{ key + ':' }}</b></b-col>
+                    <b-col>{{ value }}</b-col>
+                </b-row>
+            </template>
+        </b-card>
+        </template>
+    </b-table>
+    <div style="margin-top:-14px; padding-right:9px;" class="mr-1">
+        <form-button :variant="noRowsSelectedVariant" @click.native="clearSelection" :small="true">Clear Selection
+        </form-button>
+        <form-button :variant="allRowsSelectedVariant" @click.native="selectAll" :small="true">Select All</form-button>
+    </div>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="info-output"></b-pagination>
+
+    <p class="mt-3">Current Page: {{ currentPage }}</p>
+
+</div>
