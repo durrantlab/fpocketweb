@@ -32,7 +32,7 @@ export function setup(): void {
                     <p style="margin-top:-15px;">
                         Brought to you by the <a target="_blank" href="http://durrantlab.com">Durrant Lab</a> and
                         <a target="_blank" href="https://reporter.nih.gov/search/McHBj_PFF0elQMu9OJ2AlQ/project-details/10189658">NIH R01GM132353</a>.
-                        Please cite the <a target="_blank" href="#">FPocketWeb</a> and <a target="_blank" href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-168"><i>fpocket</i></a> manuscripts.
+                        Please cite the <a target="_blank" href="https://www.biorxiv.org/content/10.1101/2022.05.27.493797v1">FPocketWeb</a> and <a target="_blank" href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-168"><i>fpocket</i></a> manuscripts.
                         License: <a target="_blank" href="https://opensource.org/licenses/Apache-2.0">Apache 2.0.</a>
                     </p>
                     <b-button variant="primary" target="_blank" href="http://durrantlab.com">More Info</b-button>
