@@ -1,8 +1,29 @@
 <div>
     <sub-section title="Visualization">
-        <form-group label="" id="input-group-receptor-3dmol" description="">
-            <threedmol :autoLoad="true" type="pockets" :proteinSurface="false"></threedmol>
-        </form-group>
+        <!-- <div class="row"> -->
+            <!-- <div class="col-sm"> -->
+            <!-- </div> -->
+
+            <form-group label="" id="input-group-receptor-3dmol" description="">
+                <threedmol :autoLoad="true" type="pockets" :proteinSurface="false"></threedmol>
+            </form-group>
+
+            <div class="col-sm d-none d-md-block rounded pt-2" style="width: 120px; float:right; position:absolute; top:75px; right:30px; background-color:rgba(255, 255, 255, 0.95);">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked value="" id="pocket1">
+                    <label class="form-check-label" for="pocket1">
+                      Pocket #1
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="pocket2">
+                    <label class="form-check-label" for="pocket2">
+                      Pocket #2
+                    </label>
+                </div>
+                ...
+            </div>
+        <!-- </div> -->
         <p class="text-center mb-0">Execution time: {{time}} seconds</p>
     </sub-section>
     <sub-section title="Detected Pockets">
