@@ -17,6 +17,13 @@ import 'vue-slider-component/theme/antd.css';
 /** An object containing the vue-component computed functions. */
 let computedFunctions = {
 
+    "selectedPockets"(): any[] {
+        return this.$store.state["selectedPockets"];
+    },
+    "pocketsRendered"(): string {
+        return this.$store.state["pocketsRendered"];
+    },
+
     "rows"(): number {
         return this.items.length
     },
@@ -127,6 +134,17 @@ let computedFunctions = {
  * An object containing the vue-component watch functions
  */
 let watchFunctions = {
+    // The purpose of this is to deselct the rows once checkboxes in the 3dmoljs plugin viewer were changed
+    "selectedPockets": function (newSelectedPockets: any, oldSelectedPockets: any): void {
+        const unselectRows = oldSelectedPockets.filter(x => !newSelectedPockets.includes(x));
+        for (let i = 0; i < unselectRows.length; i++)
+            this.$refs.infoOutput.unselectRow(unselectRows[i] - 1);
+        const selectRows = newSelectedPockets.filter(x => !oldSelectedPockets.includes(x));
+        for (let i = 0; i < selectRows.length; i++)
+            this.$refs.infoOutput.selectRow(selectRows[i] - 1);
+    },
+
+
     /**
      * Watch when the items computed property.
      * @returns void
@@ -134,6 +152,12 @@ let watchFunctions = {
      */
     "items"(): void {
         setTimeout(() => { this.$refs.infoOutput.selectRow(0); }, 300);
+        this.$store.commit("setVar", {
+            name: "totalPocketsDetected",
+            val: this.items.length
+        })
+        console.log("Number of pockets detected:" + this.items.length);
+
     },
     /**
      * Watch when the selected data property.
@@ -183,6 +207,15 @@ let watchFunctions = {
             name: "pocketsToRender",
             val: tmp
         });
+        // storing all displayed pockets
+        tmp = [];
+        for (let i = 0; i < newSelected.length; i++)
+            tmp.push(newSelected[i]['pocket']);
+        this.$store.commit("setVar", {
+            name: "pocketsRendered",
+            val: tmp
+        })
+
     },
     "colors"(): void {
         this.setColorsStoreVar();
@@ -269,7 +302,7 @@ export function setup(): void {
                 "sliderMin": 0,
                 "sliderMax": 1,
                 "sliderInterval": 0.01,
-                "perPage": 10,
+                "perPage": 0,
                 "currentPage": 1,
             }
         },

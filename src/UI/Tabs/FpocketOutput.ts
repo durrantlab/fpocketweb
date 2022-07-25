@@ -10,6 +10,24 @@ import { saveBlob } from "../../Utils";
 //@ts-ignore
 import template from "./templates/output.htm";
 
+/**
+ * An object containing the vue-component watch functions
+ */
+let watchFunctions = {
+    "pocketsRendered": function (newPocketsRendered: any, oldPocketsRendered: any): void {
+        // The purpose of this is to react when new elements of pocketsRendered is hanged.
+        this.selected = this.$store.state["pocketsRendered"];
+    },
+
+    "selected": function (newSelectedPockets: any, oldSelectedPockets: any): void {
+        this.$store.commit("setVar", {
+            name: "selectedPockets",
+            val: this.selected
+        });
+    },
+}
+
+
 /** An object containing the vue-component computed functions. */
 let computedFunctions = {
     /**
@@ -18,6 +36,12 @@ let computedFunctions = {
      */
     "stdOut"(): string {
         return this.$store.state["stdOut"];
+    },
+    /**
+         * Get the value of the totalPocketsDetected variable
+         */
+    "totalPocketsDetected"(): any {
+        return this.$store.state["totalPocketsDetected"];
     },
 
     /**
@@ -29,6 +53,11 @@ let computedFunctions = {
         //this.populateItems();
         return this.$store.state["outputContents"];
     },
+
+    "pocketsRendered"(): string {
+        return this.$store.state["pocketsRendered"];
+    },
+
 
     /**
      * Get the execution time.
@@ -66,7 +95,7 @@ let methodsFunctions = {
         // dynamic import JSZIP
         //@ts-ignore
         import(
-            /* webpackChunkName: "JSZip" */ 
+            /* webpackChunkName: "JSZip" */
             /* webpackMode: "lazy" */
             "jszip"
         ).then(JSZip => {
@@ -98,13 +127,16 @@ export function setup(): void {
         "template": template,
         "props": {},
         "computed": computedFunctions,
+        "watch": watchFunctions,
 
         /**
          * Get the data associated with this component.
          * @returns any  The data.
          */
         "data"() {
-            return {}
+            return {
+                "selected": [],
+            }
         },
         "methods": methodsFunctions
     })
