@@ -8,7 +8,7 @@
             <threedmol :autoLoad="true" type="pockets" :proteinSurface="false"></threedmol>
         </form-group>
 
-        <div class="col-sm d-none d-md-block rounded pt-2" style="width: 140px; float:right; position:absolute; top:75px; right:30px; background-color:rgba(255, 255, 255, 0.95); overflow-y: scroll;">
+        <div class="col-sm d-none d-md-block rounded pt-2" style="max-height: 315px; width: 145px; float:right; position:absolute; top:63px; right:0; padding-bottom:5px; background-color:rgba(255, 255, 255, 0.95); overflow-y: scroll;">
             <div class="form-check" v-for="(n, index) in totalPocketsDetected" :key="index">
                 <input class="form-check-input" type="checkbox" v-model="selected" :value="index + 1" :id="'pocket' + index">
                 <label class="form-check-label" :for="'pocket' + index">

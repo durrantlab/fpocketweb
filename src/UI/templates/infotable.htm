@@ -1,5 +1,5 @@
 <div class="overflow-auto" id="infoTable">
-    <b-table id="info-output" ref="infoOutput" :per-page="perPage" :current-page="currentPage" :items="items" :fields="fields" @row-selected="onRowSelected" primary-key="Score" :tbody-transition-props="transProps" selectable responsive="sm">
+    <b-table sticky-header="350px" head-variant="light" id="info-output" ref="infoOutput" :per-page="perPage" :current-page="currentPage" :items="items" :fields="fields" @row-selected="onRowSelected" primary-key="Score" :tbody-transition-props="transProps" selectable responsive="sm">
         <template #cell(show_details)="row">
             <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
             <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">

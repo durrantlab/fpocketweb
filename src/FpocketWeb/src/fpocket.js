@@ -5993,7 +5993,13 @@ var workerResponded = false,
         flushMessages();
 
         var func = Module['_' + msg.data['funcName']];
-        if (!func) throw 'invalid worker function to call: ' + msg.data['funcName'];
+
+        if (!func) {
+            // JDD Added this to avoid error when other libraries use webworkers.
+            return;
+        }
+
+        // if (!func) throw 'invalid worker function to call: ' + msg.data['funcName'];
         var data = msg.data['data'];
         if (data) {
             if (!data.byteLength) data = new Uint8Array(data);

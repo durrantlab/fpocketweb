@@ -10,6 +10,8 @@ import { saveBlob } from "../../Utils";
 //@ts-ignore
 import template from "./templates/output.htm";
 
+// import * as JSZip from "jszip";
+
 /**
  * An object containing the vue-component watch functions
  */
@@ -92,14 +94,13 @@ let methodsFunctions = {
      * @returns void
      */
     "fpocketOutputZipDownload"(): void {
-        // dynamic import JSZIP
+        // dynamic import 
         //@ts-ignore
         import(
             /* webpackChunkName: "JSZip" */
             /* webpackMode: "lazy" */
             "jszip"
         ).then(JSZip => {
-            //@ts-ignore
             let zip = new JSZip.default();
             const nameTrimmed = this.$store.state["pdbFileNameTrimmed"];
             zip.folder("/" + nameTrimmed + "_out");
@@ -110,6 +111,7 @@ let methodsFunctions = {
                 zip.file("/" + nameTrimmed + "_out/" + protein_out[i], window["FS"]["readFile"]("/" + nameTrimmed + "_out/" + protein_out[i]));
             for (let i = 2; i < pockets.length; i++)
                 zip.file("/" + nameTrimmed + "_out/pockets/" + pockets[i], window["FS"]["readFile"]("/" + nameTrimmed + "_out/pockets/" + pockets[i]));
+            
             zip.generateAsync({ type: "blob" })
                 .then(function (contentBlob) {
                     saveBlob(contentBlob, nameTrimmed + "_out.zip");

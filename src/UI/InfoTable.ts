@@ -47,8 +47,8 @@ let computedFunctions = {
                     items.push({
                         'pocket': i + 1,  // Leave lower case
                         'Score': tmp[1].split(":")[1],
-                        'Druggability score': tmp[2].split(":")[1],
-                        'Number of alpha spheres': tmp[3].split(":")[1],
+                        'Druggability': tmp[2].split(":")[1],
+                        'Alpha Spheres': tmp[3].split(":")[1],
                         'Total SASA': tmp[4].split(":")[1],
                         'Polar SASA': tmp[5].split(":")[1],
                         'Apolar SASA': tmp[6].split(":")[1],
@@ -86,11 +86,11 @@ let computedFunctions = {
             {
                 key: 'pocket',
                 label: 'Pocket #',
-                sortable: false
+                sortable: true
             },
             {
                 key: 'color',
-                label: 'Display Color',
+                label: 'Color',
                 sortable: false
             },
             {
@@ -101,14 +101,14 @@ let computedFunctions = {
             {
                 key: 'Score',
                 sortable: true,
-                variant: 'active'
+                // variant: 'active'
             },
             {
-                key: 'Druggability score',
+                key: 'Druggability',
                 sortable: true
             },
             {
-                key: 'Number of alpha spheres',
+                key: 'Alpha Spheres',
                 sortable: true
             },
             {
@@ -117,7 +117,7 @@ let computedFunctions = {
             },
             {
                 key: 'details',
-                label: 'Show Details'
+                label: 'Details'
             }
         ];
     },
